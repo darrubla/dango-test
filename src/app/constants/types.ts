@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react'
+
 type ButtonProps = {
   text: string
   action: () => void
@@ -13,4 +15,9 @@ interface CardProps {
   srcImage: string
 }
 
-export type { CardProps, ButtonProps }
+type SummaContextType = {
+  values: Object
+  setValues: Dispatch<SetStateAction<Object>>
+}
+
+export type { CardProps, ButtonProps, SummaContextType }

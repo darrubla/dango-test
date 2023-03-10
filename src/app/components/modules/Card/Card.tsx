@@ -1,6 +1,4 @@
-'use client'
-import { useState } from 'react'
-import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { Button } from '../../elements/Button/Button'
@@ -14,8 +12,14 @@ import {
   CardEditFontSize,
   CardEditTitle,
   CardImage,
+  CardLink,
+  CardPrice,
+  CardPriceContainer,
+  CardQuantity,
   CardTitle,
 } from './Card.styles'
+import { useSumma } from '@/app/context/summaContext'
+import { transformCurrency } from '@/app/utils'
 
 export const Card: React.FC<CardProps> = ({
   title,
@@ -25,34 +29,55 @@ export const Card: React.FC<CardProps> = ({
   srcImage,
   id,
 }) => {
-  const [showEdit, setShowedit] = useState<boolean>(true)
+  const { setValues, values } = useSumma()
+  const [showEdit, setShowedit] = useState<boolean>(false)
   const [titleValue, setTitleValue] = useState<string>(title)
   const [fontSize, setFontSize] = useState<string>('1.2')
+  const [units, setUnits] = useState(quantity)
 
-  const handleTitleChange = (value: string) => {
-    setTitleValue(value)
-  }
-
-  const handleFontSizeChange = (value: string) => {
-    setFontSize(value)
-  }
+  useEffect(() => {
+    setValues({
+      ...values,
+      [id]: units * price,
+    })
+  }, [units])
 
   return (
     <CardContainer>
       <CardImage src={srcImage} alt='product image' width={400} height={100} />
       <CardTitle>{titleValue}</CardTitle>
+      <CardPriceContainer>
+        <CardPrice>{transformCurrency(price)}</CardPrice>
+        <CardQuantity
+          value={units}
+          type='number'
+          min={0}
+          step={1}
+          max={10}
+          onChange={({ target }) => setUnits(parseInt(target.value))}
+        />
+      </CardPriceContainer>
       <CardDescription $fontSize={fontSize}>{description}</CardDescription>
       <Button
-        action={() => console.log(`${title} added to cart`)}
+        action={() =>
+          console.log(`%c${title}`, 'color: blue', 'added to cart!')
+        }
         text='Add to cart'
         id={id}
       />
-      <Link href={`/product/${id}`}>Learn More</Link>
+      <Link href={`#`} legacyBehavior>
+        <CardLink>Learn More</CardLink>
+      </Link>
+      <Button
+        text={!showEdit ? 'Edit' : 'Close Edit'}
+        action={() => setShowedit(!showEdit)}
+        id='show-edit'
+      />
       <CardEdit $show={showEdit}>
         <CardEditTitle
           type='text'
           value={titleValue}
-          onChange={({ target }) => handleTitleChange(target.value)}
+          onChange={({ target }) => setTitleValue(target.value)}
         />
         <CardEditFontSize
           type='range'
@@ -60,7 +85,7 @@ export const Card: React.FC<CardProps> = ({
           max='2'
           step='0.2'
           value={fontSize}
-          onChange={({ target }) => handleFontSizeChange(target.value)}
+          onChange={({ target }) => setFontSize(target.value)}
         />
       </CardEdit>
     </CardContainer>
