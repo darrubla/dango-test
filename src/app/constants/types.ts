@@ -17,17 +17,7 @@ interface CardProps {
 
 type SummaContextType = {
   values: Object
-  setValues: Dispatch<
-    SetStateAction<{
-      1: number
-      2: number
-      3: number
-      4: number
-      5: number
-      6: number
-      7: number
-    }>
-  >
+  setValues: Dispatch<SetStateAction<any>>
 }
 
 export type { CardProps, ButtonProps, SummaContextType }
