@@ -34,11 +34,6 @@ export function SummaProvider({ children }: Props) {
     6: 12,
     7: 12,
   })
-  const sum = () => {
-    // const quantities = Object.values(summa)
-    // const result = quantities.reduce((acc, item) => acc + item, 0)
-    // setSumma(result)
-  }
   const value = useMemo(
     () => ({
       values,
