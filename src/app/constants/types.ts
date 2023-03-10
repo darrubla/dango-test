@@ -1,0 +1,16 @@
+type ButtonProps = {
+  text: string
+  action: () => void
+  id: string | number
+}
+
+interface CardProps {
+  title: string
+  price: number
+  quantity: number
+  description: string
+  id: number
+  srcImage: string
+}
+
+export type { CardProps, ButtonProps }
