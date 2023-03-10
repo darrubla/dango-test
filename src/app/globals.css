@@ -89,6 +89,10 @@ html {
   font-size: 62.5%; /*1rem = 10px*/
 }
 
+body {
+  padding: 4rem;
+}
+
 a {
   color: inherit;
   text-decoration: none;
